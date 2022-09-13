@@ -1,0 +1,9 @@
+After using this code, your new Add to Cart button will stop working...You need to use the below for loop to fix the issue.
+if (cart['pr' + a][0] == 0) {
+        for (var item in cart) {
+            document.getElementById('div' + item).innerHTML = '<button id = "' + item + '" class="btn btn-primary cart">Add to Cart</button>'
+        }
+        delete cart['pr' + a];
+    } else {
+        document.getElementById('valpr' + a).innerHTML = cart['pr' + a][0];
+    }

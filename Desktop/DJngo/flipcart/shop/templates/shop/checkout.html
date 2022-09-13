@@ -1,0 +1,117 @@
+{% extends 'shop/basic.html' %}
+
+
+{% block title%} Checkout- flipkart {% endblock %}
+{% block body %}
+
+<div class="container">
+  <div class="col my-4">
+    <h2>step-1 : Flipcart Express Checkout</h2>
+    <h2>Review Your Product</h2>
+    <div>
+      <ul class="list-group" id="items">
+      </ul>
+      <nav aria-label="breadcrumb mt-3">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page">Total Amount To Be Paid:
+            <b><i><span id="totalPrice"></span></b></i><br>
+            Fill Below Details to Complete Your Order.
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <div class="col my-4">
+    <h2>step-2 : </h2>
+    <h2>Address and Other Details:</h2>
+    <form method="post" action="/shop/checkout/">{% csrf_token %}
+      <input type="hidden" name="itemsJson" id="itemsJson">
+      <input type="hidden" name="amount" id="amount">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="name">Name</label>
+          <input type="name" class="form-control" id="name" name="name" placeholder="name">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputEmail4">Email</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+        </div>
+
+      </div>
+      <div class="form-group">
+        <label for="inputAddress">Address</label>
+        <input type="text" class="form-control" id="address1" name="address1" placeholder="Inside Indian Territory">
+      </div>
+      <div class="form-group">
+        <label for="inputAddress2">Address 2</label>
+        <input type="text" class="form-control" id="address2" name="address2" placeholder="Apartment, studio, or floor">
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputCity">City</label>
+          <input type="text" class="form-control" id="city" name="city" placeholder="Enter City">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputState">State</label>
+          <input type="text" class="form-control" id="state" name="state" placeholder="Enter State">
+        </div>
+        <div class="form-group col-md-2">
+          <label for="inputZip">Zip</label>
+          <input type="Number" class="form-control" id="zip_code" name="zip_code">
+        </div>
+        <div class="form-group col-md-2">
+          <label for="phone">Phone</label>
+          <input type="tel" class="form-control" id="phone" name="phone" placeholder="Numeric-Only">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Place Order</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block js %}
+<script>
+
+  if (localStorage.getItem('cart') == null) {
+    var cart = {};
+  } else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+
+  }
+
+  console.log(cart);
+  var sum = 0;
+  var totalPrice =0;
+  if ($.isEmptyObject(cart)) {
+    // if cart is empty 
+    mystr = `<p><i> Sorry Your cart is Empty...Please Add Some items To Cart To Checkout </p></i>`
+    $('#items').append(mystr);
+  } else{
+    for (item in cart) {
+      let name = cart[item][1];
+      let qty = cart[item][0];
+      let itemPrice = cart[item][2];
+      sum = sum + qty;
+      totalPrice = totalPrice + qty*itemPrice
+      mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                  ${name}
+                  <span class="badge badge-primary badge-pill">${qty}</span>
+                </li>`
+      $('#items').append(mystr);
+    }
+  }
+
+  document.getElementById('cart').innerHTML = sum;
+  document.getElementById('totalPrice').innerHTML = totalPrice;
+  $('#itemsJson').val(JSON.stringify(cart));
+  {% if thank %}
+  alert('Thanks for the Order and follow Order{{id}}.Use it to track your Order')
+  localStorage.clear();
+  document.location = "/shop";
+  {% endif %}
+  $('#amount').val($('#totalPrice').html())
+</script>
+{% endblock %}

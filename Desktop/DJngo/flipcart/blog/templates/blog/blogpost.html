@@ -1,0 +1,63 @@
+{% extends 'blog/basic.html' %}<!--used for reuse and reduction of code and main coding done on basic.html page-->
+{% block body %}<!--used for reuse and reduction of code in body area and to extend navigation bar on each page-->
+{% load static %}<!--used to load images on page-->
+<div class="container mt-3 my-5">
+    <div class="row mt-4">
+        <div class="col-md-8 blog-main">
+          <h3 class="font-italic">
+            {{post.title}}
+          </h3>
+
+            <div class="blog-post">
+                <h3 class="pb-3 mb-4 font-italic border-bottom">{{post.head1}}</h3>
+                <p class="blog-post-meta">{{post.pub_date}} <a href="#"> By.Alok</a><br>{{post.head1_cont}}</p> 
+                <h3 class="pb-3 mb-4 font-italic border-bottom">
+                  {{post.sub_head2}}
+                </h3>
+                <p>{{post.shead2_cont}}</p>
+                
+                <h3 class="pb-3 mb-4 font-italic border-bottom">
+                  {{post.sub_head3}}
+                </h3>
+                <p>{{post.shead3_cont}}</p>
+
+                <div class="card align-items-center" style="width: 18rem;">
+                  <img src='/media/{{post.image}}' alt="Card image cap">
+                </div>
+            </div><!-- /.blog-post -->
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" id="" class="btn btn-primary">Prev </button>
+              <button type="button" id="" class="btn btn-primary">Next </button>
+            </div>
+            <!--code to implement comments plugin extracted from google search "fb comments plugin"-->
+            <div class="fb-comments" data-href="http://127.0.0.1:8000/blog/blogpost/{{post.post_id}}" data-width="" data-numposts="5">
+            <!--{{post.post_id}} by adding this we can configure different comments for each post-->
+            </div>
+        </div><!-- /.blog-main -->
+
+        <aside class="col-md-4 blog-sidebar">
+          <div class="p-3 mb-3 bg-light rounded">
+            <h4 class="font-italic">About</h4>
+            <p class="mb-0">Flipcart<br><em> Best E-com On Earth</em> where your Wish Get Full-Fill</p>
+          </div>
+
+
+          <div class="p-3">
+            <h4 class="font-italic">Contact Us</h4>
+            <ol class="list-unstyled">
+              <li><a href="#">GitHub</a></li>
+              <li><a href="#">Twitter</a></li>
+              <li><a href="#">Facebook</a></li>
+            </ol>
+            <!--code to implement like plugin extracted from google search "fb like plugin"-->
+            <div class="fb-like" data-href="http://127.0.0.1:8000/blog/blogpost/{{post.post_id}}" data-width="" data-layout="button_count" data-action="recommend" data-size="large" data-share="true">
+            <!--{{post.post_id}} by adding this we can configure different like count for each post-->
+            </div>
+
+          </div>
+        </aside><!-- /.blog-sidebar -->
+            
+    </div>
+</div>
+
+{% endblock %}
